@@ -1,0 +1,92 @@
+{% extends "banner.html" %}
+
+
+{% block title %}
+    Stats
+{% endblock %}
+
+{% block main %}
+<h1 style="color:#7CB5EC; font-size:800%; font-family: 'Abhaya Libre';">Statistics</h1><br><br><br>
+<h2 style="color: #22325b;">This is how much of your total expenditures went toward each category so far:</h2>
+<div class="container-fluid" style="padding: 10px 50px 60px 50px;">
+<!--Display pie chart that shows percentage of "total dollars spent" spent on each category-->
+<div id="piechart" style="margin: 0 auto; width:33%;"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+// Use Google's visualization API to generate pie chart
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+var data = new google.visualization.DataTable();
+// Columns of pie chart's table are category's name and total amount of money spent on it
+data.addColumn('string','Category');
+data.addColumn('number','Amount');
+var listofsums = [];
+var listofnames =[];
+// Retrieve listsums and listnames that contain data on user's total spendings per category, as specified and passed by application.py
+listofsums = {{ listsums }};
+// Use 'safe' to allow us to use python list of strings as javascript array (credits: stackoverflow)
+listofnames = {{ listnames|safe }};
+for (i = 0; i < {{ length }}; i++)
+{
+// add as many rows as categories the user spent money on (length is number of these categories as specified in application)
+// for each row, name of category is retrieved from listnames and total spendings from listsums
+data.addRows([
+  [listofnames[i], listofsums[i]]
+]);
+}
+  // Add a title and set the width and height of the chart
+  var options = {'title':' ', 'width':550, 'height':400};
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  chart.draw(data, options);
+}
+</script>
+</div>
+
+<!--Display chart that shows percentage of user's monthly budget that they used for each of the past 3 months-->
+<h2 style="color: #22325b;">Percentage of budget used per month for the past 3 months</h2>
+<div id="containerbudget" style="min-width: 310px; height: 400px; margin: 0 auto"></div><br><br><br>
+<script>
+// Use Highcharts bar chart to show budget percentage used
+Highcharts.chart('containerbudget', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Percentage of budget used per month'
+    },
+    xAxis: {
+        // months
+        categories: [
+            'Oct',
+            'Nov',
+            'Dec'
+        ],
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: '%'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color}">{series.name}: </td>' +
+            '<td><b>{point.y} %</b></td></tr>',
+        useHTML: true
+    },
+// retrive and use percentage for each month as specified and passed by application
+ series: [{
+    name: 'Percentage of budget used',
+    color: '#177040',
+    data: [{{ totaloct }}, {{ totalnov }}, {{ totaldec }}]
+  }]
+
+});
+</script>
+
+{% endblock %}

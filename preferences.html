@@ -1,0 +1,93 @@
+{% extends "banner.html" %}
+
+{% block title %}
+    Preferences
+{% endblock %}
+
+{% block main %}
+<!--For each form, all inputs are required in order to submit-->
+<!--Form for user to change their budget-->
+<form action="/preferences" method="post">
+<div class="form-group">
+    <!--Retrieve current budget from application.py-->
+    <label for="changebudget" style="text-align: left; float: left; font-size:110%; color:#22325b;">Change my monthly budget from ${{ budget }} to:</label><br><br>
+    <input required autofocus type="text" class="form-control" id="changebudget" name="newbud" placeholder="12345.67" autocomplete="off"
+              <input type="text" class="form-control" size="50" placeholder="Monthly budget (e.g: 2020.17)" name="budgetsign" oninput="checkifnum(this)"><br>
+    <button class="btn btn-lg" style="color: #22325b;" type="submit" name="prefer" value="changebudget">Update</button><br>
+    <script>
+        // Credits to stackoverflow for IsNumeric function
+        function IsNumeric(n) {
+                  return !isNaN(parseFloat(n)) && isFinite(n);
+                }
+        // Force user to provide number to proceed
+        function checkifnum(input) {
+            if (IsNumeric(input.value) {
+                input.setCustomValidity('');
+            } else {
+                input.setCustomValidity('Budget must be a number');
+                    }
+        }
+    </script>
+</div>
+</form>
+<!--Form for user to change their password-->
+<form action="/preferences" method="post">
+<div class="form-group">
+    <label style="text-align: left; float: left; font-size:110%; color:#22325b;">Change my password:</label><br><br>
+    <input required type="password" class="form-control" size="50" placeholder="Current password"  name="oldpass"><br>
+    <input required type="password" class="form-control" size="50" placeholder="New password" id="newpass" name="newpass"><br>
+    <input required type="password" class="form-control" size="50" placeholder="Repeat new password" id="confnewpass" oninput="check(this)"><br>
+    <button class="btn btn-lg" style="color: #22325b;" type="submit" name="prefer" value="changepass">Update</button><br>
+    <script type='text/javascript'>
+                function check(input) {
+                    // "oninput" in password confirmation forces user to enter matching passwords to proceed
+                    if (input.value != document.getElementById('newpass').value) {
+                        input.setCustomValidity('Passwords must match.');
+                    } else {
+                        // input is valid -- reset the error message
+                        input.setCustomValidity('');
+                    }
+                }
+                // display alert in case "old password" entered is wrong (after redirecting to /welcome as seen in application.py)
+                if ({{ wrongoldpass }} == 1) {
+                    window.alert("Wrong old password.");
+                  }
+    </script>
+</div>
+</form>
+<!--Form for user to change their email address-->
+<form action="/preferences" method="post">
+<div class="form-group">
+    <label style="text-align: left; float: left; font-size:110%; color:#22325b;">Change my email address:</label><br><br>
+    <input required type="email" class="form-control" size="50" placeholder="Old email address" name="oldemail"><br>
+    <input required type="email" class="form-control" size="50" placeholder="New email address" name="newemail" id="newemail"><br>
+    <input required type="email" class="form-control" size="50" placeholder="Repeat new email address" autocomplete="off" oninput="checkk(this)"><br>
+    <input required type="password" class="form-control" size="50" placeholder="Enter password" name="checkwithpass"><br>
+    <button class="btn btn-lg" style="color: #22325b;" type="submit" name="prefer" value="changeemail">Update</button><br><br>
+    <script type='text/javascript'>
+                // display alert in case new email and email confirmation don't match (thanks to confirmation's "oninput")
+                function checkk(input) {
+                    if (input.value != document.getElementById('newemail').value) {
+                        input.setCustomValidity('Emails must match.');
+                    } else {
+                        // input is valid -- reset the error message
+                        input.setCustomValidity('');
+                    }
+                }
+    </script>
+    <script>
+                // if wrong password or wrong "old email", display alert because wrongdata = 1 as passed by application.py
+                if ({{ wrongdata }} == 1) {
+                    window.alert("Wrong email/password");
+                  }
+    </script>
+    <script>
+                // if inputted "new email" is already taken, display alert because usedemail = 1 as passed by application.py
+                if ({{ usedemail }} == 1) {
+                    window.alert("The email you are trying to use is taken.");
+                  }
+    </script>
+</div>
+</form>
+
+{% endblock %}

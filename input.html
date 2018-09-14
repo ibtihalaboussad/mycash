@@ -1,0 +1,48 @@
+{% extends "banner.html" %}
+
+{% block title %}
+    Add an expenditure
+{% endblock %}
+
+{% block main %}
+    <!--Name was passed from application.py through session id-->
+    <p style="font-size:300%; color:#7CB5EC; font-family:'Abhaya Libre';"><b>Welcome, {{ name }}!</b></p>
+    <p style="font-size:300%; color:#7CB5EC; font-family:'Abhaya Libre';"><b>Please enter information about your recent expenditure.</b></p><br><br>
+<!--Form where user respectively selects date, selects category, inputs details, and inputs amount spent on expenditure-->
+<!--All inputs are required to click on submit-->
+<form action="/input" method="post">
+<div class="form-group">
+    <label for="date-input" style="text-align: left; float: left; color: #22325b;">When did the expenditure occur?</label>
+    <input autofocus class="form-control" type="date" value="2017-12-08" name="day" id="date-input">
+</div>
+<div class="form-group">
+    <label for="expcategory" style="text-align: left; float: left; color: #22325b;">How would you classify your expenditure?</label>
+    <select required class="form-control" id="expcategory" name="category">
+      <option value="Meals">Meals</option>
+      <option value="Snacks">Snacks</option>
+      <option value="Drinks">Drinks</option>
+      <option value="Furniture">Furniture</option>
+      <option value="Books and school supplies">Books and school supplies</option>
+      <option value="Entertainment (concerts, movies, etc)">Entertainment (concerts, movies, etc)</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Laundry">Laundry</option>
+      <option value="Transportation">Transportation</option>
+      <option value="Self-care">Self-care</option>
+      <option value="Charity">Charity</option>
+      <option value="Miscellaneous">Miscellaneous</option>
+    </select>
+ </div>
+<div class="form-group">
+    <label for="expcategory" style="text-align: left; float: left; color: #22325b;">What exactly did you spend money on?</label>
+    <input required type="text" class="form-control" id="details" name="details" placeholder="Coffee from CS50 Café">
+</div>
+<div class="form-group">
+    <label for="expcategory" style="text-align: left; float: left; color: #22325b;">How much money did you spend?</label>
+    <input required type="text" class="form-control" size="50" id="amount" name="amount" aria-describedby="amounthelp" placeholder="2020.17">
+</div>
+<div class="panel-footer" style="border-top: solid white;">
+    <button class="btn btn-lg" style="background-color:#7CB5EC;">Submit</button>
+</div>
+</form>
+
+{% endblock %}

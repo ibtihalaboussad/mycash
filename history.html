@@ -1,0 +1,59 @@
+{% extends "banner.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+<!--Form that allows user to choose sorting method for History, and returns different values based on chosen method-->
+<form action="/history" method="post">
+<div class="form-group">
+    <label for="sort-by" style="text-align: left; float: left; font-size:110%; color:#7CB5EC;">Sort expenditures by:</label>
+    <!--Choosing a sorting method is required to submit-->
+    <select required class="form-control" id="sort-by" name="chosensorting">
+      <option value=1>Date: old to recent</option>
+      <option value=2>Date: recent to old</option>
+      <option value=3>Amount: low to high</option>
+      <option value=4>Amount: high to low</option>
+      <option value=5>Category</option>
+    </select>
+</div>
+<div class="panel-footer" style="border-top: solid white;">
+    <button class="btn btn-lg" style="background-color:#7CB5EC;">Sort</button>
+</div>
+</form>
+<br><br>
+
+<!--Table that contains all information about user's previously inputted expenditures-->
+<table class="table table-striped table-bordered table-hover table-condensed table-responsive">
+  <!--Header displays chosen sorting method (its name is retrieved from python file)-->
+  <h2 style="color: #22325b;">{{ sorting_order }}</h2>
+  <thead>
+    <tr style="color: #22325b;">
+      <th>Date</th>
+      <th>Category</th>
+      <th>Details</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!--Use list of all past expenditures from application.py to display table's body-->
+    {% for spending in historylist %}
+      <tr style="color: black;">
+        <td style="text-align: left;">{{ spending.date }}</td>
+        <td style="text-align: left;">{{ spending.category }}</td>
+        <td style="text-align: left;">{{ spending.details }}</td>
+        <td style="text-align: left;">${{ spending.amount }}</td>
+      </tr>
+    {% endfor %}
+    <tr style="background-color: white">
+        <td style="text-align: left; border-color:#ffffff;"></td>
+        <td style="text-align: left; border-color:#ffffff;"></td>
+        <td style="text-align: left; border-color:#ffffff; font-size:110%; color:#22325b;"><b>Total:</b></td>
+        <!--Total as calculated in application.py-->
+        <td style="text-align: left; border-color:#ffffff; font-size:110%; color:#22325b;">${{ total }}</td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}
