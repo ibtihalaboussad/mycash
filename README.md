@@ -1,9 +1,5 @@
 MyCash is a website for college students through which they can keep track of their expenditures and get a sense
-of how they spent their money during the past few months. I created this website because as a low-income student
-myself, I dislike how hard it is to get aware of where my money goes, and software like MyCash can make it easier
-for me and other students to get a clearer idea about our spendings' distribution, and know what categories of
-expenditures we need to focus on reducing our consumption of.
-
+of how they spent their money during the past few months.
 In order to visit the website, all that is needed is to open the "project" folder and use "flask run".
 
 The welcome page contains a presentation of the website and its features, but most importantly, it allows users to
